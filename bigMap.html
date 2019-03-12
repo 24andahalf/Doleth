@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.0.1/TweenMax.min.js"></script>	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/utils/Draggable.min.js"> </script>	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/plugins/CSSPlugin.min.js"></script>	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.2/plugins/CSSRulePlugin.min.js"></script>	
+<script src="POI.js"></script>	
+<style>
+	body{ margin: 0; background-color: black; overflow; hidden; display: flex; flex-direction: row; } 
+	.mapContainer { width: 79vw; height: 100vh; overflow: hidden; float: left; z-index: 0 }
+	.map:hover { cursor: pointer !important; }
+	.popupContainer { width: 19vw; height: 100vh; box-sizing: border-box; padding: 1em 1.5em; background-color: black; float: right; flex: 99 99 0; position: relative;}
+	.map { /* width: 4134px; height: 3639px; background-image: url(Fullmap.jpg);*/ position: relative; display: inline-block;}
+	.POI { width: 20px; height: 20px; background-color: green; border-radius: 50%; position: absolute; border: solid 5px red; box-sizing: border-box; }
+	.POI>.child{ padding: 5px 10px; max-width: 200px; position: absolute; left: 50%; bottom: 20px;  content: attr(data-content); background-color: white; color: black; display: none; opacity: 0; text-align: center;}
+	/* POI positioning */	
+	.child { color: black; } 
+	.popupText { color: white; position: absolute; width: calc(100% - 3em); }
+	.devTools { position: fixed; top: 20px; left: 20px; width: calc(80% - 40px); height: 80px; color: black; background-color: white; z-index: 1; display: none;} }
+	.location { position: absolute; top: 20px; left: 20px; width: 200px; height: 3em; color: black; background-color: white; z-index: 1; display: none;}
+	body { displau }
+</style>	
+</head>
+
+<body>
+
+
+	<div class="devTools">
+		<div class="location"></div>
+	</div>
+<div class="mapContainer">
+	<div class="map">
+		<img src="Fullmap.jpg" style="">	
+	</div>	
+</div>
+<div class="popupContainer">
+	
+	<div class="popupText"></div>	
+</div>	
+<script> 
+	$(window).on("load", function() {
+		var draggable = Draggable.create($('.map'));
+		getSize();
+		var devActive = false;
+		
+		
+
+		var POIarray = [];
+		var currPos = $('.map').position();
+		for (i = 0; i < POIobjs.length; i++) {
+		
+		//	$('.map').append('<div class="POI" id="A'+i+'"><div class="child"></div></div>');
+			
+		}
+
+		$('.map').mousemove(function(e){
+			currPos = $('.map').position();
+			var x = e.pageX - currPos.left;
+			var y = e.pageY - currPos.top;
+			$('.location').html("X: " + x + "<br> Y: " + y); 
+		});
+		
+		$('.map').click(function(evt){
+			if(evt.ctrlKey && devActive == true){
+				console.log("Trying to make a new POI");
+				console.log(POIobjs.length);
+			   	POIobjs.push({
+					POIid: 		"A"+POIobjs.length,		
+					hoverText: 	"new",
+					popupText: 	"This is a new POI",
+					x:			evt.pageX - currPos.left - 10,
+					y:			evt.pageY - currPos.top - 10
+				});
+				
+				console.log(POIobjs.length);
+				POIarray.push( new PointOfInterest(POIobjs[POIobjs.length-1].POIid, POIobjs[POIobjs.length-1].hoverText, POIobjs[POIobjs.length-1].popupText, POIobjs[POIobjs.length-1].x, POIobjs[POIobjs.length-1].y) );
+			   
+			   }
+			console.log($('.map').position());
+		});
+		
+		//$('.POI').hover(function(){
+		$(document).on("mouseenter", ".POI", function() {
+			var thisChild = $(this).children('div');
+			TweenMax.set(thisChild, { display: "block" });
+			thisChild.first().text(POIobjs[parseInt(this.id.slice(-1))].hoverText);
+			TweenMax.to(thisChild, 0.5, { opacity: 1 });
+		});
+		$(document).on("mouseleave", ".POI", function() {
+			var thisChild = $(this).children('div');			
+			TweenMax.to(thisChild, 0.5, { opacity: 0, onComplete: function(){
+				TweenMax.set(thisChild, { display: "none" });
+			} });
+		});
+
+		//$('.POI').click(function(){
+		$(document).on('click', '.POI', function() {
+				console.log(this.id);
+
+				TweenMax.from($('.popupText'), 0.5, { opacity: 0, top: 25 });
+				$('.popupText').html(this.id+"<br><br>"+POIobjs[parseInt(this.id.slice(-1))].popupText);
+		});
+
+		function getSize() {
+		var windowWidth = window.innerWidth;
+		var windowHeight = window.innerHeight;
+		var mapWidth = $('img').width();
+		var mapHeight = $('img').height();
+
+		var newMinX, newMinY, newMaxX, newMaxY;
+
+			newMinX = windowWidth * .79 - mapWidth; 
+			newMinY = windowHeight - mapHeight;
+			newMaxX = 0
+			newMaxY = 0	
+
+			console.log( mapWidth+" "+mapHeight);
+
+			draggable[0].applyBounds({minX: newMinX, minY: newMinY, maxX: newMaxX, maxY: newMaxY} );
+		}
+
+		class PointOfInterest{
+			constructor(i, h, p, x, y){
+				console.log("Running POI Constructor!");
+				this.POIid = i;
+				this.hoverText = h;
+				this.popupText = p;
+				
+				$('.map').append('<div class="POI" id="'+i+'"><div class="child"></div></div>');
+				$('#'+i).css({left: x, top: y });
+			}
+
+			toot(){
+				console.log(this.POIid + " " + this.hoverText + " " + this.popupText);
+			}
+		}
+
+		for (i = 0; i < POIobjs.length; i++) { 
+			POIarray[i] = new PointOfInterest(POIobjs[i].POIid, POIobjs[i].hoverText, POIobjs[i].popupText, POIobjs[i].x, POIobjs[i].y);
+		}
+		
+		function onKonamiCode(cb) {
+		  var input = '';
+		  var key = '38384040373937396665';
+		  document.addEventListener('keydown', function (e) {
+			input += ("" + e.keyCode);
+			if (input === key) {
+			  return cb();
+			}
+			if (!key.indexOf(input)) return;
+			input = ("" + e.keyCode);
+		  });
+		}
+
+	onKonamiCode(function () {
+		alert('Dev mode activated');
+		$('.location').css('display', 'block');
+		devActive = true;
+	})
+		
+		
+	/*  To add in new code. this will open a new window and you can addin the code there to copy from
+		var x = window.open('');
+		x.document.write('<div>test</div>');
+	*/
+		
+		
+	});
+</script>	
+
+</body>
+</html>
