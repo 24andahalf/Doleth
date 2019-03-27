@@ -18,7 +18,7 @@
 			currPos = $('.map').position();
 			var x = e.pageX - currPos.left;
 			var y = e.pageY - currPos.top;
-			$('.location').html("X: " + x + "<br> Y: " + y); 
+			$('.location').html("X: " + x.toFixed(2) + "<br> Y: " + y.toFixed(2)); 
 		});
 		
 		$('.map').click(function(evt){
@@ -63,13 +63,17 @@
 
 		//$('.POI').click(function(){
 		$(document).on('click', '.POI', function() {
-				$('.POI').removeClass('active');
+				$('.POI').removeClass('active').removeClass('beforeActive');
 				$(this).addClass('active');
-				
+				if($(this).prev().is("div")){
+				   $(this).prev().addClass('beforeActive');
+				}
+				/* This also needs to be reset in Nav button clicks too! */
 				
 				var currID = this.id;
-				showPopUp(currID);
 				
+				showPopUp(currID);
+				navCheck(currID.slice(-3));
 				
 
 		});
@@ -77,17 +81,17 @@
 		$('.button').click(function(){
 			if(newPOIs > 0){
 				for ( var i = newPOIs; i > 0; i--) { 
-				console.log(POIobjs[POIobjs.length - i]);
-				console.log('{');
-				console.log('POIid: 				"'+POIobjs[parseInt(POIobjs.length - i)].POIid+'",');
-				console.log('hoverText: 			"'+POIobjs[parseInt(POIobjs.length - i)].hoverText+'",');
-				console.log('popupText: 			"'+POIobjs[parseInt(POIobjs.length - i)].popupText+'", ');
-				console.log('popupHeaderImage:	"robe",');
-				console.log('x:					'+POIobjs[parseInt(POIobjs.length - i)].x+',');
-				console.log('y:					'+POIobjs[parseInt(POIobjs.length - i)].y+'');
+					console.log(POIobjs[POIobjs.length - i]);
+					console.log('{');
+					console.log('POIid: 				"'+POIobjs[parseInt(POIobjs.length - i)].POIid+'",');
+					console.log('hoverText: 			"'+POIobjs[parseInt(POIobjs.length - i)].hoverText+'",');
+					console.log('popupText: 			"'+POIobjs[parseInt(POIobjs.length - i)].popupText+'", ');
+					console.log('popupHeaderImage:	"robe",');
+					console.log('x:					'+POIobjs[parseInt(POIobjs.length - i)].x+',');
+					console.log('y:					'+POIobjs[parseInt(POIobjs.length - i)].y+'');
 
-				console.log('}	');
-				}
+					console.log('}	');
+					}
 			 }
 		});
 		
@@ -215,6 +219,9 @@
 		TweenMax.from($('.popupText'), 0.5, { opacity: 0, top: 25 });
 		TweenMax.from($('.popupHeader'), 0.5, { opacity: 0, onStart: function(){
 			$('.popupHeader').find('img').attr("src", "images/"+POIobjs[parseInt(currID.slice(-3))].popupHeaderImage+".svg");
+			$('.nav').addClass('blocked');
+		}, onComplete: function(){
+			$('.nav').removeClass('blocked');
 		} });
 		$('.popupText').html(currID+"<br><br>"+POIobjs[parseInt(currID.slice(-3))].popupText);
 		var windowWidth = window.innerWidth * .79;
@@ -271,21 +278,19 @@
 	var currArrowView = 0	
 		
 	$('.arrowAdjust').click(function(){
-		currArrowView++
 		if(currArrowView > 2){
 		   currArrowView = 0;
 		   }
+		console.log("Arrow adjust number is currently " + currArrowView);
 		var classes = [' all',' some',' none'];
 		  $('.POI').each(function(){
-			  for (i = 0; i < 3; i++) { 
-			  	if(i != currArrowView){
-				   		$(this).addClass(classes[i]);
-				   } else {
-					 $(this).removeClass(classes[i]);  
-				   }
+			  for (i = 0; i < classes.length; i++) { 
+			  	$(this).removeClass(classes[i]);
 			  }
-			this.classList += classes[($.inArray(this.className, classes)+1)%classes.length];
+			  $(this).addClass(classes[currArrowView]);
 		  });
+		
+		currArrowView++
 	});	
 		
 		
