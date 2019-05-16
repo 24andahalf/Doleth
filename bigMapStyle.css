@@ -1,9 +1,10 @@
+* { font-family: 'IM Fell DW Pica SC', serif; font-size: 105% }
 .crap{ display: none; }
 
-body { margin: 0; background-color: black; overflow; hidden; display: flex; flex-direction: row; } 
-.mapContainer { width: 79vw; height: 100vh; overflow: hidden; float: left; z-index: 0 }
+body { margin: 0; background-color: black; overflow: hidden; display: flex; flex-direction: row; } 
+.mapContainer { width: 100vw; height: 100vh; overflow: hidden; float: left; z-index: 0 }
 .map:hover { cursor: grab !important; }
-.popupContainer { width: 19vw; height: 100vh; box-sizing: border-box; padding: 1em 1.5em; background-color: black; float: right; flex: 99 99 0; position: relative; overflow: hidden;}
+.popupContainer { width: 22vw; height: 100vh; box-sizing: border-box; padding: 3em 1em 1em 3.5em;  position: absolute; overflow: hidden; background-image: url(images/oldPaper.png); background-size: cover; background-color: rgba(0,0,0,0.25); right: 0; top: 0;  box-shadow: -25px 25px 25px -13px rgba(0,0,0,0.25);  }
 .map { /* width: 4134px; height: 3639px; background-image: url(Fullmap.jpg);*/ position: relative; display: inline-block;}
 .POI { width: 20px; height: 20px; background-color: green; border-radius: 50%; position: absolute; border: solid 5px red; box-sizing: border-box; }
 .POI:hover { cursor: pointer; }
@@ -16,7 +17,7 @@ opacity: 0; text-align: center;}
 .child { color: black; z-index: 99; } 
 .popupHeader { color: white; position: relative; width: 100%; height: 20%; float: left;}
 .popupHeader>img { width: 100%; height: 100%; padding-bottom: 1em; box-sizing: border-box; }
-.popupText { color: white; position: relative; width: 100%; height: 70%; float: right; overflow-y: auto; }
+.popupText { color: black; position: relative; width: 100%; height: 70%; float: right; overflow-y: auto; }
 .popupNav { width: 100%; height: 10%; float: left; position: relative; }
 .nav { height: 80%; width: 20%; top: 10%; color: white; position: absolute; transition: opacity 0.5s; background-size: contain; background-repeat: no-repeat; background-position: center; background-image: url(images/chevron.svg); }
 .nav:hover { cursor: pointer; }
@@ -38,3 +39,14 @@ input { width: 75%; }
 .beforeActive>.arrowFrom{ visibility: visible; }
 .none>.arrowFrom{  }
 
+.copyHole { display: none; }
+
+@media screen and (orientation: portrait) {
+
+	body { display: block !important;  }
+	.mapContainer { width: 100vw; height: 79vh; clear: right; }
+	.popupContainer { width: 100vw; height: 20vh; }
+	.popupHeader { width: 20%; height: 100%; }
+	.popupText { width: 60%; height: 100%; float: left; }
+	.popupNav { width: 18%; height: 100%; float: right; }
+}

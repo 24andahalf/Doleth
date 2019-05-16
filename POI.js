@@ -52,7 +52,25 @@ var POIobjs = [
 	
 		// Add any new POI Objects in here please :)
 	
-	
+	,
+{
+POIid: "A006",
+hoverText: "hover 1",
+popupText: "Here we gooooooooooo",
+popupHeaderImage: "robe",
+x: 1176.6000061035156,
+y: 1149
+}
+
+,
+{
+POIid: "A007",
+hoverText: "snarf!",
+popupText: "Snarf a BARF!!!!",
+popupHeaderImage: "robe",
+x: 1308.6000061035156,
+y: 1164
+}
 	
 	
 	

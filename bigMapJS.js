@@ -38,6 +38,13 @@
 				console.log(POIobjs.length);
 				POIarray.push( new PointOfInterest(POIobjs[POIobjs.length-1].POIid, POIobjs[POIobjs.length-1].hoverText, POIobjs[POIobjs.length-1].popupText, POIobjs[POIobjs.length-1].popupHeaderImage, POIobjs[POIobjs.length-1].x, POIobjs[POIobjs.length-1].y) );
 			   
+				var classes = [' all',' some',' none'];
+				var realArrowView = currArrowView - 1;
+				if(realArrowView < 0){
+				   realArrowView = 2;
+				   }
+				$('#A'+morphToThree(newID)).addClass(classes[realArrowView]);
+			   
 			   }
 			directArrows();
 		});
@@ -80,19 +87,45 @@
 		
 		$('.button').click(function(){
 			if(newPOIs > 0){
-				for ( var i = newPOIs; i > 0; i--) { 
-					console.log(POIobjs[POIobjs.length - i]);
-					console.log('{');
-					console.log('POIid: 				"'+POIobjs[parseInt(POIobjs.length - i)].POIid+'",');
-					console.log('hoverText: 			"'+POIobjs[parseInt(POIobjs.length - i)].hoverText+'",');
-					console.log('popupText: 			"'+POIobjs[parseInt(POIobjs.length - i)].popupText+'", ');
-					console.log('popupHeaderImage:	"robe",');
-					console.log('x:					'+POIobjs[parseInt(POIobjs.length - i)].x+',');
-					console.log('y:					'+POIobjs[parseInt(POIobjs.length - i)].y+'');
+				
+				var poiText = [newPOIs];
+				
+				for ( var i = 0; i < newPOIs; i++) { 
+					console.log(i);
+					var thisText = "";
+					thisText += ",<br>";
+					thisText += "{<br>";
+					thisText += "POIid: 				\""+POIobjs[parseInt(POIobjs.length - (newPOIs - i))].POIid +"\",<br>";
+					thisText += "hoverText: 			\""+POIobjs[parseInt(POIobjs.length - (newPOIs - i))].hoverText+"\",<br>";
+					thisText += "popupText: 			\""+POIobjs[parseInt(POIobjs.length - (newPOIs - i))].popupText+"\",<br>";
+					thisText += "popupHeaderImage:	\"robe\",<br>";
+					thisText += "x:					"+POIobjs[parseInt(POIobjs.length - (newPOIs - i))].x+",<br>";
+					thisText += "y:					"+POIobjs[parseInt(POIobjs.length - (newPOIs - i))].y+"<br>";
+					thisText += "}";  
+					
+					poiText[i] = thisText;
+					console.log(thisText);
+				}
+				childWindow = window.open('','childWindow','location=yes, menubar=yes, toolbar=yes');
 
-					console.log('}	');
-					}
-			 }
+				childWindow.document.open();
+				console.log("got here!");
+				childWindow.document.title = "BigMap - New POIs";          
+
+				childWindow.document.write('<html><head></head><body>');
+								
+				for ( var ii = 0; ii < newPOIs; ii++) {
+					console.log(newPOIs);
+					console.log(ii + " " + poiText[ii]);
+					childWindow.document.write('<p>'+poiText[ii]+'<p>');
+					
+				}
+				childWindow.document.write('</body></html>');
+				
+			 } 
+			
+			
+			
 		});
 		
 		$('.nav').click(function(){
@@ -109,9 +142,11 @@
 			   }
 			var newActiveString = morphToThree(newActive);
 			navCheck(newActiveString);
-			$('.POI').removeClass('active');
+			$('.POI').removeClass('active').removeClass('beforeActive');
 			$('#A'+newActiveString).addClass('active');
 			showPopUp($('.active').attr('id'));
+			someChecker(newActive);
+			
 		});
 
 		function getSize() {
@@ -278,6 +313,7 @@
 	var currArrowView = 0	
 		
 	$('.arrowAdjust').click(function(){
+		console.log(currArrowView);
 		if(currArrowView > 2){
 		   currArrowView = 0;
 		   }
@@ -286,12 +322,30 @@
 		  $('.POI').each(function(){
 			  for (i = 0; i < classes.length; i++) { 
 			  	$(this).removeClass(classes[i]);
+				$(this).removeClass('beforeActive');  
 			  }
+			  
 			  $(this).addClass(classes[currArrowView]);
+			  
 		  });
 		
+		var currActive = $('.active').attr('id').slice(-3);
+			
+		
+		someChecker(parseInt(currActive));
 		currArrowView++
 	});	
 		
 		
+	function someChecker(newActive){
+		if($('.active').hasClass('some')){
+			
+			if(newActive != 0) {
+				var prevActive = newActive - 1;
+				$('#A'+morphToThree(prevActive)).addClass('beforeActive');
+			}
+	   }
+	}	
+		
+	$('.arrowAdjust').click();	
 	});
