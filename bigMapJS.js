@@ -52,15 +52,20 @@
 		//$('.POI').hover(function(){
 		$(document).on("mouseenter", ".POI", function() {
 			var thisChild = $(this).children('.child');
+			
+			$(this).children('img').attr("src","images/mapIcon-POI-focused.svg");
 			var currArrow = $(this).children('.arrowFrom');
 			TweenMax.set(thisChild, { display: "block" });
-			console.log(this.id.slice(-3));
 			thisChild.first().text(POIobjs[parseInt(this.id.slice(-3))].hoverText);
 			TweenMax.to(thisChild, 0.5, { opacity: 1 });
 			TweenMax.to(currArrow, 0.5, { opacity: 1 });
 		});
 		$(document).on("mouseleave", ".POI", function() {
-			var thisChild = $(this).children('.child');			
+			var thisChild = $(this).children('.child');		
+			if(!$(this).hasClass('active')){
+					$(this).children('img').attr("src","images/mapIcon-POI.svg");   
+			   }
+			
 			TweenMax.to(thisChild, 0.5, { opacity: 0, onComplete: function(){
 				TweenMax.set(thisChild, { display: "none" });
 			} });
@@ -71,6 +76,7 @@
 		//$('.POI').click(function(){
 		$(document).on('click', '.POI', function() {
 				$('.POI').removeClass('active').removeClass('beforeActive');
+				$('.ntPOI').removeClass('active');
 				$(this).addClass('active');
 				if($(this).prev().is("div")){
 				   $(this).prev().addClass('beforeActive');
@@ -81,9 +87,52 @@
 				
 				showPopUp(currID);
 				navCheck(currID.slice(-3));
-				
+				navToPOI();
 
 		});
+		
+		
+		
+		//$('.ntPOI').hover(function(){
+		$(document).on("mouseenter", ".ntPOI", function() {
+			var thisChild = $(this).children('.child');
+			$(this).children('img').attr("src","images/mapIcon-ntPOI-focused.svg");
+			TweenMax.set(thisChild, { display: "block" });
+			thisChild.first().text(ntPOIobjs[parseInt(this.id.slice(-3))].hoverText);
+			TweenMax.to(thisChild, 0.5, { opacity: 1 });
+		});
+		$(document).on("mouseleave", ".ntPOI", function() {
+			var thisChild = $(this).children('.child');		
+			
+			$(this).children('img').attr("src","images/mapIcon-ntPOI.svg");
+			TweenMax.to(thisChild, 0.5, { opacity: 0, onComplete: function(){
+				TweenMax.set(thisChild, { display: "none" });
+			} });
+		});
+
+		//$('.ntPOI').click(function(){
+		$(document).on('click', '.ntPOI', function() {
+				$('.POI').removeClass('active').removeClass('beforeActive');
+				$('.ntPOI').removeClass('active')
+				$(this).addClass('active');
+				
+				var currID = this.id;
+				
+				showPopUp(currID);
+				navToNTPOI();
+
+		});
+		
+		function navToNTPOI(){
+			console.log("Well, we're now outside of the timeline so..... here we are.");
+			$('.nav').removeClass('disable');
+		}
+		function navToPOI(){
+			console.log("Well, we're now in the timeline so..... here we are.");
+		}
+		
+		
+		
 		
 		$('.button').click(function(){
 			if(newPOIs > 0){
@@ -131,21 +180,43 @@
 		$('.nav').click(function(){
 			var currActive = $('.active').attr('id').slice(-3);
 			var newActive; 
-			if($(this).hasClass('Left')){
-					if(currActive > 0){
-						newActive = parseInt(currActive) - 1;
-					   } 
-			   } else {
-				   if(currActive < $('.POI').length-1){
-					  	newActive = parseInt(currActive) + 1;	
-					  }
-			   }
-			var newActiveString = morphToThree(newActive);
-			navCheck(newActiveString);
-			$('.POI').removeClass('active').removeClass('beforeActive');
-			$('#A'+newActiveString).addClass('active');
-			showPopUp($('.active').attr('id'));
-			someChecker(newActive);
+			if($('.active').hasClass('POI')){
+				if($(this).hasClass('Left')){
+						if(currActive > 0){
+							newActive = parseInt(currActive) - 1;
+						   } 
+				   } else {
+					   if(currActive < $('.POI').length-1){
+							newActive = parseInt(currActive) + 1;	
+						  }
+				   }
+				var newActiveString = morphToThree(newActive);
+				navCheck(newActiveString);
+				$('.POI').removeClass('active').removeClass('beforeActive');
+				$('#A'+newActiveString).addClass('active');
+				showPopUp($('.active').attr('id'));
+				someChecker(newActive);
+			} else if($('.active').hasClass('ntPOI')){
+			    console.log("Yup! This is an NT");
+				if($(this).hasClass('Left')){
+						if(currActive > 0){
+							newActive = parseInt(currActive) - 1;
+						   } else { 
+						   	newActive = $('.ntPOI').length-1;
+						   }
+				   } else {
+					   if(currActive < $('.ntPOI').length-1){
+							newActive = parseInt(currActive) + 1;	
+						  } else { 
+						  	newActive = 0;	
+						  }
+				   }
+				var newActiveString = morphToThree(newActive);
+				//navCheck(newActiveString);
+				$('.ntPOI').removeClass('active');
+				$('#B'+newActiveString).addClass('active');
+				showPopUp($('.active').attr('id'));
+			 }
 			
 		});
 
@@ -172,7 +243,7 @@
 				this.popupHeaderImage = hi;
 				this.popupText = p;
 				
-				$('.map').append('<div class="POI" id="'+i+'"><div class="child"></div><div class="arrowFrom"><img src="images/arrow.svg"></div></div>');
+				$('.map').append('<div class="POI" id="'+i+'"><img src="images/mapIcon-POI.svg"><div class="child"></div><div class="arrowFrom"><img src="images/arrow.svg"></div></div>');
 				$('#'+i).css({left: x, top: y });
 			}
 
@@ -183,6 +254,22 @@
 
 		for ( var i = 0; i < POIobjs.length; i++) { 
 			POIarray[i] = new PointOfInterest(POIobjs[i].POIid, POIobjs[i].hoverText, POIobjs[i].popupText, POIobjs[i].popupHeaderImage, POIobjs[i].x, POIobjs[i].y);
+		}
+		
+		class ntPointOfInterest{
+			constructor(i, h, p, hi, x, y){
+				this.ntPOIid = i;
+				this.hoverText = h;
+				this.popupHeaderImage = hi;
+				this.popupText = p;
+				
+				$('.map').append('<div class="ntPOI" id="'+i+'"><img src="images/mapIcon-ntPOI.svg"><div class="child"></div></div>');
+				$('#'+i).css({left: x, top: y });
+			}
+		}
+		for ( var ii = 0; ii < ntPOIobjs.length; ii++) { 
+			console.log(ii);
+			POIarray[ii] = new ntPointOfInterest(ntPOIobjs[ii].ntPOIid, ntPOIobjs[ii].hoverText, ntPOIobjs[ii].popupText, ntPOIobjs[ii].popupHeaderImage, ntPOIobjs[ii].x, ntPOIobjs[ii].y);
 		}
 		
 		function onKonamiCode(cb) {
@@ -267,6 +354,7 @@
 		var panToX = adjustIfOutside(currPosLeft, windowWidth, "width");
 		var panToY = adjustIfOutside(currPosTop, windowHeight, "height");
 		TweenMax.to($('.map'), 0.5, { x: panToX, y: panToY });
+		
 	}	
 		
 	function adjustIfOutside(currPos, windowMeasurement, widthOrHeight){
