@@ -6,7 +6,7 @@ hoverText: "Adventure awaits...",
 popupText: "GUZZAH!!!!",
 popupHeaderImage: "robe",
 x: 425,
-y: 788
+y: 788  
 }
 
 ,
