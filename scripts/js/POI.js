@@ -1,5 +1,5 @@
 var POIobjs = [
-			,
+			
 {
 POIid: "A000",
 hoverText: "Adventure awaits...",
