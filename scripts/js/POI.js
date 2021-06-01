@@ -1,33 +1,33 @@
 var POIobjs = [
 			
-{
-POIid: "A000",
-hoverText: "Adventure awaits...",
-popupText: "GUZZAH!!!!",
-popupHeaderImage: "robe",
-x: 425,
-y: 788  
-}
+			{
+			POIid: "A000",
+			hoverText: "Adventure awaits...",
+			popupText: "GUZZAH!!!!",
+			popupHeaderImage: "robe",
+			x: 425,
+			y: 788  
+			}
 
-,
-{
-POIid: "A001",
-hoverText: "Rest stop",
-popupText: "1 day intop travels",
-popupHeaderImage: "robe",
-x: 560,
-y: 759
-}
+			,
+			{
+			POIid: "A001",
+			hoverText: "Rest stop",
+			popupText: "1 day intop travels",
+			popupHeaderImage: "robe",
+			x: 560,
+			y: 759
+			}
 
-,
-{
-POIid: "A002",
-hoverText: "Cave in the woods",
-popupText: "",
-popupHeaderImage: "robe",
-x: 531,
-y: 731
-}
+			,
+			{
+			POIid: "A002",
+			hoverText: "Cave in the woods",
+			popupText: "",
+			popupHeaderImage: "robe",
+			x: 531,
+			y: 731
+			}
 
 	
 		// Add any new POI Objects in here please :)
