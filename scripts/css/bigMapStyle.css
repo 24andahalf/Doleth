@@ -2,7 +2,7 @@
 .crap{ display: none; }
 
 body { margin: 0; background-color: black; overflow: hidden; display: flex; flex-direction: row; } 
-.mapContainer { width: 100vw; height: 100vh; overflow: hidden; float: left; z-index: 0; background-color: white; }
+.mapContainer { width: 100vw; height: 100vh; overflow: hidden; float: left; z-index: 0; background-color: #5f5732; }
 .map:hover { cursor: grab !important; }
 .popupContainer { width: 22vw; height: 100vh; box-sizing: border-box; padding: 3em 1em 1em 3.5em;  position: absolute; overflow: hidden; background-image: url(../../images/oldPaper.png); background-size: cover; background-color: rgba(0,0,0,0.25); right: 0; top: 0;  box-shadow: 0px -25px 25px 25px rgba(0,0,0,0.25);  }
 .map { /* width: 4134px; height: 3639px; background-image: url(../../images/Fullmap.jpg);*/ position: relative; display: inline-block;}
