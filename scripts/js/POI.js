@@ -1,7 +1,7 @@
 var POIobjs = [
 			,
 {
-POIid: "A001",
+POIid: "A000",
 hoverText: "Adventure awaits...",
 popupText: "GUZZAH!!!!",
 popupHeaderImage: "robe",
@@ -11,7 +11,7 @@ y: 788
 
 ,
 {
-POIid: "A002",
+POIid: "A001",
 hoverText: "Rest stop",
 popupText: "1 day intop travels",
 popupHeaderImage: "robe",
@@ -21,7 +21,7 @@ y: 759
 
 ,
 {
-POIid: "A003",
+POIid: "A002",
 hoverText: "Cave in the woods",
 popupText: "",
 popupHeaderImage: "robe",
