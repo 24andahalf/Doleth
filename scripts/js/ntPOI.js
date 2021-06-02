@@ -1,20 +1,13 @@
 var ntPOIobjs = [
 			{
 				ntPOIid: 			"B000",
-				hoverText: 			"non timeline Point of Interest 1",
-				popupText: 			"Lorem Ipsum and some other placeholder text for placeholdery goodness.", 
-				popupHeaderImage:	"open-book",
-				x:					1357,
-				y:					1788
+				hoverText: "The caravan's destination",
+				popupText: "Bix and Parn are hoping to trade their silver and iron ore as well as steel for the ironroot wood harvested in this area.",
+				popupHeaderImage: "robe",
+				x: 1795,
+				y: 588
+				}
 
-			}, 
-			{
-				ntPOIid: 			"B001",		
-				hoverText: 			"non timeline Point of Interest 2",
-				popupText: 			"Lorem Ipsum and some other placeholder text for placeholdery goodness. Part deux.",
-				popupHeaderImage:	"crossed-swords",
-				x:					395,
-				y:					1718
 			}
 			
 	
